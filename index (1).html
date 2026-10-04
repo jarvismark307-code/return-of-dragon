@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .calculator {
+            width: 350px;
+            margin: auto;
+            padding: 30px;
+            border: 2px solid black;
+            border-radius: 15px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #status {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <h1>HELLO everyone</h1>
+
+        <input type="number" id="n1" placeholder="Enter x">
+        <br>
+
+        <select id="operation">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+        </select>
+
+        <br>
+
+        <input type="number" id="n2" placeholder="Enter y">
+        <br>
+
+        <button onclick="calculator()">Calculate</button>
+
+        <p id="result"></p>
+        <p id="status"></p>
+    </div>
+
+    <audio id="validSound" src="valid.wav"></audio>
+    <audio id="invalidSound" src="not_valid.wav"></audio>
+
+    <script>
+        function add(a, b) {
+            return a + b;
+        }
+
+        function sub(a, b) {
+            return a - b;
+        }
+
+        function multiply(a, b) {
+            return a * b;
+        }
+
+        const operations = {
+            "+": add,
+            "-": sub,
+            "*": multiply
+        };
+
+        function calculator() {
+            const n1Input = document.getElementById("n1");
+            const operation = document.getElementById("operation").value;
+            const n2Input = document.getElementById("n2");
+
+            const n1 = Number(n1Input.value);
+            const n2 = Number(n2Input.value);
+
+            if (n1Input.value === "" || n2Input.value === "") {
+                document.getElementById("result").innerText =
+                    "Please enter both numbers.";
+
+                document.getElementById("status").innerText =
+                    "❌ not_valid";
+
+                document.getElementById("invalidSound").play();
+                return;
+            }
+
+            if (!(operation in operations)) {
+                document.getElementById("result").innerText =
+                    "Invalid operation";
+
+                document.getElementById("status").innerText =
+                    "❌ not_valid";
+
+                document.getElementById("invalidSound").play();
+                return;
+            }
+
+            const answer = operations[operation](n1, n2);
+
+            document.getElementById("result").innerText =
+                n1 + " " + operation + " " + n2 + " = " + answer;
+
+            document.getElementById("status").innerText =
+                "✅ valid";
+
+            document.getElementById("validSound").play();
+        }
+    </script>
+
+</body>
+</html>
